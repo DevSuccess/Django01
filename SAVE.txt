@@ -1,0 +1,2 @@
+https://docs.djangoproject.com/fr/4.2/intro/tutorial03/
+Save : Écriture de vues qui font réellement des choses
