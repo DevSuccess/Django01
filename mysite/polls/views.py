@@ -1,4 +1,6 @@
-from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404, render
+# from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.template import loader
 
 from .models import Question
@@ -7,16 +9,19 @@ from .models import Question
 # Create your views here.
 
 def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    # latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    question = get_object_or_404(Question)
     template = loader.get_template("polls/index.html")
     context = {
-        "latest_question_list": latest_question_list,
+        "question": question,
     }
 
-    return HttpResponse(template.render(context, request))
+    # return HttpResponse(template.render(context, request))
     # ou : return HttpResponse(request, "polls/index.html", context)
+    return render(request, "polls/index.html", context)
 
 
+"""
 def detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
@@ -24,6 +29,12 @@ def detail(request, question_id):
         raise Http404("Question does not exist")
 
     return HttpResponse(request, "pools/detail.html", {"question": question})
+"""
+
+
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(question, "polls/detail.html", {"question": question})
 
 
 def results(request, question_id):
